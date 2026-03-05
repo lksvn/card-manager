@@ -1,19 +1,20 @@
-import os
+from pathlib import Path
 
 # Set this to the root of your Obsidian vault
 # If empty, it assumes the current directory is the root
-FOLDER = r'C:\Path\To\Your\Vault'
-
-# Paths for data files (typically inside the Scripts folder)
-TYPES_FILE = os.path.join(FOLDER, 'Scripts', 'types.md')
-COLLECTIONS_FILE = os.path.join(FOLDER, 'Scripts', 'collections.md')
-GROUP_FILE = os.path.join(FOLDER, 'Scripts', 'groups.md')
+# r"" is used to handle Windows paths without needing to escape backslashes 
+FOLDER = Path(r'My Vault path')
 
 # Path where your card Markdown files will be created
 CARDS_DIR = FOLDER
 
+# Paths for data files
+TYPES_FILE = FOLDER / 'any-subfolder' / 'types.md'
+COLLECTIONS_FILE = FOLDER / 'any-subfolder' / 'collections.md'
+GROUP_FILE = FOLDER / 'any-subfolder' / 'groups.md'
+
 # Path for card images
-IMAGES_DIR = os.path.join(FOLDER, 'Images')
+IMAGES_DIR = FOLDER / 'Images'
 
 # Custom type overrides for normalization
 # Maps Scryfall types to your preferred names

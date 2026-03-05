@@ -1,53 +1,30 @@
 import time
 
+from pathlib import Path
 from config import GROUP_FILE
 from src.ui.cli import clear_screen, prompt
 
-def load_grouping_tags(group_file=GROUP_FILE):
-    with open(group_file, 'r') as f:
-        return [line.strip() for line in f if line.strip()]  
+def load_grouping_tags(
+    group_file: Path = GROUP_FILE
+) -> list[str]:
+    """Load grouping tags from the group file. Returns a list of grouping tags."""    
+    if not group_file.exists():
+        return []
+    return [line.strip() for line in group_file.read_text(encoding='utf-8').splitlines() if line.strip()]
 
-def tag_list(tags, show_header=True):
+def tag_list(
+    tags: list[str], 
+    show_header: bool = True
+) -> None:
+    """Helper function to display a numbered list of grouping tags."""
     if show_header: print("📋 Existing tags:")
     for idx, tag in enumerate(tags, start=1):
         print(f"{idx}. {tag}")
 
-def grouping_tags_menu():
-    grouping_tags = load_grouping_tags()
-    while True:
-        clear_screen()
-        print("🏷️ Grouping Tags Menu 🏷️")
-        
-        print("⚙️ Options:")
-        print("1. List all grouping tags")
-        print("2. Add a new tag")
-        print("3. Delete a tag")
-        print("4. Edit a tag")
-        print("q. Return to main menu")
-
-        choice = input("➖ ").strip().lower()
-
-        if choice == 'q' or not choice:
-            print("↩️ Returning to main menu.")
-            time.sleep(2)
-            break
-        elif choice == '1':
-            list_grouping_tag(grouping_tags)
-            continue
-        elif choice == '2':
-            add_grouping_tag(grouping_tags)
-            continue
-        elif choice == '3':
-            delete_grouping_tag(grouping_tags)
-            continue
-        elif choice == '4':
-            edit_grouping_tag(grouping_tags)
-            continue
-        else:
-            print("➖ ❌ Invalid selection. Please try again.")
-            time.sleep(2)
-
-def list_grouping_tag(tags):
+def list_grouping_tag(
+    tags: list[str]
+) -> None:
+    """Display all grouping tags in a numbered list."""
     clear_screen()
     print("🏷️ Listing all grouping tags 🏷️")
     if not tags:
@@ -56,7 +33,11 @@ def list_grouping_tag(tags):
         tag_list(tags, False)
     input("➖ Press Enter to return to the menu...")
 
-def add_grouping_tag(tags, group_file=GROUP_FILE):
+def add_grouping_tag(
+    tags: list[str],
+    group_file: Path = GROUP_FILE
+) -> None:
+    """Add a new grouping tag to the group file if it doesn't already exist."""
     aux_list = tags
     clear_screen()
     print("🏷️ Create a new grouping tag 🏷️")
@@ -70,8 +51,7 @@ def add_grouping_tag(tags, group_file=GROUP_FILE):
             time.sleep(2)
             add_grouping_tag(aux_list, group_file)
         else:
-            with open(group_file, 'a', encoding='utf-8') as f:
-                f.write(f"{new_tag}\n")
+            group_file.write_text(group_file.read_text(encoding='utf-8') + f"{new_tag}\n")
                 
             print(f"➖ ✅ Added new grouping tag: {new_tag}")
             aux_list.append(new_tag)
@@ -80,7 +60,11 @@ def add_grouping_tag(tags, group_file=GROUP_FILE):
             if again is not None:
                 add_grouping_tag(aux_list, group_file)
 
-def delete_grouping_tag(tags, group_file=GROUP_FILE):
+def delete_grouping_tag(
+    tags: list[str],
+    group_file: Path = GROUP_FILE
+) -> None:
+    """Delete a grouping tag from the group file if it exists."""
     aux_list = tags
     clear_screen()
     print("🏷️ Delete a grouping tag 🏷️")
@@ -106,9 +90,7 @@ def delete_grouping_tag(tags, group_file=GROUP_FILE):
             if confirm is not None:
                 aux_list.pop(idx)
                 try:
-                    with open(group_file, 'w', encoding='utf-8') as f:
-                        for tag in aux_list:
-                            f.write(f"{tag}\n")
+                    group_file.write_text('\n'.join(aux_list) + '\n')
                     print(f"➖ ✅ Deleted grouping tag: {choosed_tag}")
                 except Exception as e:
                     print(f"➖ ❌ Error deleting tag: {e}")
@@ -117,7 +99,11 @@ def delete_grouping_tag(tags, group_file=GROUP_FILE):
                 if again is not None:
                     delete_grouping_tag(aux_list, group_file)
 
-def edit_grouping_tag(tags, group_file=GROUP_FILE):
+def edit_grouping_tag(
+    tags: list[str],
+    group_file: Path = GROUP_FILE
+) -> None:
+    """Edit an existing grouping tag in the group file."""
     aux_list = tags
     clear_screen()
     print("🏷️ Edit a grouping tag 🏷️")
@@ -143,9 +129,7 @@ def edit_grouping_tag(tags, group_file=GROUP_FILE):
         if new_tag is not None:
             aux_list[idx] = new_tag
             try:
-                with open(group_file, 'w', encoding='utf-8') as f:
-                    for tag in aux_list:
-                        f.write(f"{tag}\n")
+                group_file.write_text('\n'.join(aux_list) + '\n')
                 print(f"➖ ✅ Updated grouping tag: {choosed_tag} -> {new_tag}")
             except Exception as e:
                 print(f"➖ ❌ Error updating tag: {e}")
@@ -155,7 +139,8 @@ def edit_grouping_tag(tags, group_file=GROUP_FILE):
             if again is not None:
                 edit_grouping_tag(aux_list, group_file)
 
-def choose_grouping_tag():
+def choose_grouping_tag() -> str | None:
+    """Prompt the user to choose a grouping tag from the list of available tags. Returns the chosen tag or None if no tag is selected."""
     print("🏷️ Choose a grouping tag for this card:")
     tags = load_grouping_tags()
     tag = ''

@@ -1,7 +1,7 @@
 
 # 🃏 MTG Card manager for Obsidian Base
 
-Simple python script to manage an Obsidian Base of MTG cards
+Simple python script to manage an Obsidian Base of MTG cards and learning the basics of 🐍 Python
 
 ## 🎉 Currently Features
 
@@ -22,17 +22,8 @@ Simple python script to manage an Obsidian Base of MTG cards
 
 ## 💡 Roadmap
 
-- Move utilities to a sub menu:
-    - Remove unused images
-    - Add / Edit collection list, Recreate collection list from the files
-    - Add / Edit type list
-- Move cards to a sub menu and add more actions for cards:
-    - Edit
-    - Search and select a card to add
-    - Update multiple cards at once
-    - Create multiple cards at once
-- Create a new Obsidian base
-- GUI (???)
+See the detailed [ROADMAP.md](./ROADMAP.md) for planned features and project milestones.
+
 ## 📃 License
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)

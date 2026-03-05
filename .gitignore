@@ -1,6 +1,27 @@
+# Snaek things
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+
+# Junk food
+.vscode/
+Thumbs.db
+desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Base files and config
 collections.md
 types.md
 groups.md
 config.py
-__pycache__
-*.bat
